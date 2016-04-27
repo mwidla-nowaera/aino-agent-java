@@ -1,4 +1,9 @@
 # Java Agent for Aino.io
+
+
+![Build status](https://circleci.com/gh/Aino-io/agent-java.svg?style=shield&circle-token=dcfe57fa765c0f1a07a358229812c3ca774d58c0)
+
+
 Java implementation of Aino.io logging agent.
 
 ## What is [Aino.io](http://aino.io) and what does this Agent have to do with it?
