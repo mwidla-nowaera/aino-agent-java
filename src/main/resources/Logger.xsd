@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+    <xs:element name="ainoConfig">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ainoLoggerService" minOccurs="0" maxOccurs="1" />
+                <xs:element ref="operations" minOccurs="1" maxOccurs="1" />
+                <xs:element ref="applications" minOccurs="1" maxOccurs="1" />
+                <xs:element ref="idTypes" minOccurs="1" maxOccurs="1" />
+                <xs:element ref="payloadTypes" minOccurs="0" maxOccurs="1" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ainoLoggerService">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="address" minOccurs="1" maxOccurs="1" />
+                <xs:element ref="send" minOccurs="1" maxOccurs="1" />
+            </xs:sequence>
+            <xs:attribute type="xs:boolean" name="enabled" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="operations">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="operation" maxOccurs="unbounded" minOccurs="0" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="applications">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="application" maxOccurs="unbounded" minOccurs="0" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="idTypes">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="idType" maxOccurs="unbounded" minOccurs="0" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="payloadTypes">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="payloadType" maxOccurs="unbounded" minOccurs="0" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="payloadType">
+        <xs:complexType>
+            <xs:attributeGroup ref="key-name" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="address">
+        <xs:complexType>
+            <xs:attribute type="nonEmptyURI" name="uri" />
+            <xs:attribute type="nonEmptyString" name="apiKey" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="send">
+        <xs:complexType>
+            <xs:attribute type="xs:int" name="interval" />
+            <xs:attribute type="xs:int" name="sizeThreshold" />
+            <xs:attribute type="xs:boolean" name="gzipEnabled" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="operation">
+        <xs:complexType>
+            <xs:attributeGroup ref="key-name" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="application">
+        <xs:complexType>
+            <xs:attributeGroup ref="key-name" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="idType">
+        <xs:complexType>
+            <xs:attributeGroup ref="key-name" />
+        </xs:complexType>
+    </xs:element>
+    <xs:attributeGroup name="key-name">
+        <xs:attribute type="nonEmptyString" name="key" />
+        <xs:attribute type="nonEmptyString" name="name" />
+    </xs:attributeGroup>
+    <xs:simpleType name="nonEmptyString">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="nonEmptyURI">
+        <xs:restriction base="xs:anyURI">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
