@@ -29,7 +29,7 @@ Agent is configured with XML configuration file. Below is example.
 
 ```java
 File configFile = new File("/path/to/conf_file.xml");
-Logger ainoLogger = Logger.getFactory().setConfigurationBuilder(new FileConfigBuilder(configFile)).build();
+Agent ainoLogger  = Agent.getFactory().setConfigurationBuilder(new FileConfigBuilder(configFile)).build();
 ```
 
 
