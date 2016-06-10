@@ -25,7 +25,10 @@ Before using the agent, it needs to be configured. Agent can be configured manua
 Get the dependency snippet from [here](https://bintray.com/aino-io/maven/agent-java/view).
 
 ### 2. Configuring the agent
-Agent is configured with XML configuration file. Below is example.
+Agent is configured with an XML configuration file. Below is an example.
+
+If you cannot establish a direct connection to Aino.io, you can configure the agent to use an HTTP proxy.
+Otherwise you may simply leave the proxy element out from the configuration.
 
 ```java
 File configFile = new File("/path/to/conf_file.xml");
@@ -38,6 +41,7 @@ Agent ainoLogger  = Agent.getFactory().setConfigurationBuilder(new FileConfigBui
 <ainoConfig>
     <ainoLoggerService enabled="true">
         <address uri="http://localhost:8808/api/1.0/saveLogArray" apiKey="YOUR API KEY GOES HERE"/>
+        <proxy host="127.0.0.1" port="8080" />
         <send interval="5000" sizeThreshold="30" gzipEnabled="true" />
     </ainoLoggerService>
     <operations>

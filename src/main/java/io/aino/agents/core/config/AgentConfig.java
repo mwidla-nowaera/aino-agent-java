@@ -185,4 +185,44 @@ public class AgentConfig {
                 throw new RuntimeException("Invalid KeyNameElement");
         }
     }
+
+    /**
+     * Get the configured HTTP(S) proxy host.
+     *
+     * @return HTTP(S) proxy host address
+     */
+    public String getProxyHost() { return this.loggerService.getProxyHost(); }
+
+    /**
+     * Sets the address to an HTTP(S) proxy.
+     *
+     * @param proxyHost address of an HTTP(S) proxy
+     */
+    public void setProxyHost(String proxyHost) {
+        this.loggerService.setProxyHost(proxyHost);
+    }
+
+    /**
+     * Get the configured HTTP(S) proxy port.
+     *
+     * @return HTTP(S) proxy port
+     */
+    public int getProxyPort() { return this.loggerService.getProxyPort(); }
+
+    /**
+     * Sets the port to an HTTP(S) proxy.
+     *
+     * @param proxyport port of an HTTP(S) proxy
+     */
+    public void setProxyPort(int proxyport) {
+        this.loggerService.setProxyPort(proxyport);
+    }
+
+    /**
+     * Checks if an HTTP(S) proxy is defined
+     * @return true if defined
+     */
+    public boolean isProxyDefined() {
+        return this.loggerService.isProxyDefined();
+    }
 }

@@ -30,6 +30,8 @@ class ServiceConfig {
     private String addressApiKey;
     private int sendInterval;
     private int sendSizeThreshold;
+    private String proxyHost = null;
+    private int proxyPort = 0;
 
     /**
      * Checks if the agent is enabled.
@@ -141,5 +143,49 @@ class ServiceConfig {
      */
     void setGzipEnabled(boolean gzipEnabled) {
         this.gzipEnabled = gzipEnabled;
+    }
+
+    /**
+     * Gets the address of an HTTP(S) proxy.
+     *
+     * @return HTTP(S) proxy address
+     */
+    String getProxyHost() {
+        return proxyHost;
+    }
+
+    /**
+     * Sets the address of an HTTP(S) proxy.
+     *
+     * @param proxyHost HTTP(S) proxy address
+     */
+    void setProxyHost(String proxyHost) {
+        this.proxyHost = proxyHost;
+    }
+
+    /**
+     * Gets the port of an HTTP(S) proxy.
+     *
+     * @return HTTP(S) proxy port
+     */
+    public int getProxyPort() {
+        return proxyPort;
+    }
+
+    /**
+     * Sets the port of an HTTP(S) proxy.
+     *
+     * @param proxyPort HTTP(S) proxy port
+     */
+    public void setProxyPort(int proxyPort) {
+        this.proxyPort = proxyPort;
+    }
+
+    /**
+     * Checks if an HTTP(S) proxy is defined
+     * @return true if defined
+     */
+    public boolean isProxyDefined() {
+        return StringUtils.isNotBlank(getProxyHost());
     }
 }

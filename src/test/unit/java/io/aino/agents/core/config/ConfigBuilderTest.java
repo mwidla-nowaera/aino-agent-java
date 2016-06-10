@@ -30,7 +30,7 @@ public class ConfigBuilderTest {
     public void testConfigBuilderDoesNotThrowWithValidConf() {
         AgentConfig conf = new ClasspathResourceConfigBuilder("validConfig.xml").build();
 
-        assertNotNull("AgentConfig object shout not be null", conf);
+        assertNotNull("AgentConfig object should not be null", conf);
     }
 
     @Test(expected = InvalidAgentConfigException.class)
@@ -43,7 +43,7 @@ public class ConfigBuilderTest {
         File file = new File(this.getClass().getClassLoader().getResource("validConfig.xml").getPath());
         AgentConfig conf = new FileConfigBuilder(file).build();
 
-        assertNotNull("AgentConfig object shout not be null", conf);
+        assertNotNull("AgentConfig object should not be null", conf);
     }
 
     @Test
@@ -80,6 +80,17 @@ public class ConfigBuilderTest {
         assertEquals("application with name 'ESB' exists with key 'esb'", "ESB", conf.getApplications().getEntry("esb"));
         assertEquals("application with name 'TestApp 1' exists with key 'app01'", "TestApp 1", conf.getApplications().getEntry("app01"));
 
+    }
+
+    @Test
+    public void testConfigBuilderWorksWithProxyDefinition() {
+        AgentConfig confWithoutProxy = new ClasspathResourceConfigBuilder("validConfig.xml").build();
+        assertEquals("proxy should not be defined", false, confWithoutProxy.isProxyDefined());
+
+        AgentConfig confWithProxy = new ClasspathResourceConfigBuilder("validConfigWithProxy.xml").build();
+        assertEquals("proxy should be defined", true, confWithProxy.isProxyDefined());
+        assertEquals("proxy host should be set", "127.0.0.1", confWithProxy.getProxyHost());
+        assertEquals("proxy port should be set", 8080, confWithProxy.getProxyPort());
     }
 
 }

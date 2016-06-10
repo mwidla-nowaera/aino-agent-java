@@ -49,6 +49,9 @@ public class InputStreamConfigBuilder implements AgentConfigBuilder {
     private static QName CONFIG_INTERVAL_ATT_Q = new QName("interval");
     private static QName CONFIG_SIZE_THRESHOLD_ATT_Q = new QName("sizeThreshold");
     private static QName CONFIG_GZIP_ENABLED_ATT_Q = new QName("gzipEnabled");
+    private static QName CONFIG_PROXY_Q = new QName("proxy");
+    private static QName CONFIG_HOST_ATT_Q = new QName("host");
+    private static QName CONFIG_PORT_ATT_Q = new QName("port");
 
     private static QName CONFIG_OPERATIONS_Q = new QName("operations");
     private static QName CONFIG_IDTYPES_Q = new QName("idTypes");
@@ -130,6 +133,7 @@ public class InputStreamConfigBuilder implements AgentConfigBuilder {
     private void applyServiceSettings(AgentConfig config, OMElement serviceElement) {
 
         OMElement addressElement = serviceElement.getFirstChildWithName(CONFIG_ADDRESS_Q);
+        OMElement proxyElement = serviceElement.getFirstChildWithName(CONFIG_PROXY_Q);
         OMElement sendElement = serviceElement.getFirstChildWithName(CONFIG_SEND_Q);
 
         if (null == addressElement || null == sendElement) {
@@ -141,6 +145,11 @@ public class InputStreamConfigBuilder implements AgentConfigBuilder {
         config.setSendInterval(Integer.parseInt(sendElement.getAttributeValue(CONFIG_INTERVAL_ATT_Q)));
         config.setSizeThreshold(Integer.parseInt(sendElement.getAttributeValue(CONFIG_SIZE_THRESHOLD_ATT_Q)));
         config.setGzipEnabled(Boolean.parseBoolean(sendElement.getAttributeValue(CONFIG_GZIP_ENABLED_ATT_Q)));
+
+        if(null != proxyElement){
+            config.setProxyHost(proxyElement.getAttributeValue(CONFIG_HOST_ATT_Q));
+            config.setProxyPort(Integer.parseInt(proxyElement.getAttributeValue(CONFIG_PORT_ATT_Q)));
+        }
     }
 
     private void applyKeyNameElementSettings(AgentConfig config, OMElement elementList, AgentConfig.KeyNameElementType type) {

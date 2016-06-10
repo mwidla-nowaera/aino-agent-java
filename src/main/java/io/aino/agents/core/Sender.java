@@ -20,6 +20,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.client.urlconnection.URLConnectionClientHandler;
 import io.aino.agents.core.config.AgentConfig;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -80,7 +81,8 @@ public class Sender implements Runnable, TransactionDataObserver {
 
     @Override
     public void run() {
-        Client restClient = Client.create();
+        URLConnectionClientHandler connection = HttpProxyFactory.getConnectionHandler(agentConfig);
+        Client restClient = new Client(connection);
         resource = restClient.resource(agentConfig.getLogServiceUri());
 
         status.initialStatus();

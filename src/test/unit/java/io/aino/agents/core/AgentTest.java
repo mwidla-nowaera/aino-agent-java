@@ -48,13 +48,4 @@ public class AgentTest {
                 .build();
     }
 
-    @Test
-    public void testGetFactoryWorksWithValidConfigurationFile() throws Exception {
-        Agent agent = Agent.getFactory()
-                .setConfigurationBuilder(new FileConfigBuilder(new File("src/test/resources/validConfig.xml")))
-                .build();
-
-        assertNotNull(agent);
-    }
-
 }

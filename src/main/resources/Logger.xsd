@@ -15,6 +15,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element ref="address" minOccurs="1" maxOccurs="1" />
+                <xs:element ref="proxy" minOccurs="0" maxOccurs="1" />
                 <xs:element ref="send" minOccurs="1" maxOccurs="1" />
             </xs:sequence>
             <xs:attribute type="xs:boolean" name="enabled" />
@@ -57,6 +58,12 @@
         <xs:complexType>
             <xs:attribute type="nonEmptyURI" name="uri" />
             <xs:attribute type="nonEmptyString" name="apiKey" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="proxy">
+        <xs:complexType>
+            <xs:attribute type="nonEmptyURI" name="host" />
+            <xs:attribute type="xs:positiveInteger" name="port" />
         </xs:complexType>
     </xs:element>
     <xs:element name="send">
