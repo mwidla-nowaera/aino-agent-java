@@ -11,7 +11,7 @@ dependencies:
 test:
   override:
     # Run junit & integration tests for Java Agent
-    - mvn integration-test
+    - mvn verify
 
   # After running tests collect junit & integration-test reports and build artifacts
   post:
