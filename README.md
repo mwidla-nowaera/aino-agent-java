@@ -40,9 +40,10 @@ Agent ainoLogger  = Agent.getFactory().setConfigurationBuilder(new FileConfigBui
 ```xml
 <ainoConfig>
     <ainoLoggerService enabled="true">
-        <address uri="http://localhost:8808/api/1.0/saveLogArray" apiKey="YOUR API KEY GOES HERE"/>
-        <proxy host="127.0.0.1" port="8080" />
+        <address uri="https://data.aino.io/rest/v2.0/transaction" apiKey="YOUR API KEY GOES HERE"/>
         <send interval="5000" sizeThreshold="30" gzipEnabled="true" />
+        <!-- Optional: Define proxy server address and port if your environment requires it -->
+        <proxy host="127.0.0.1" port="8080" />
     </ainoLoggerService>
     <operations>
         <operation key="create" name="Create" />
