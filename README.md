@@ -20,9 +20,13 @@ See [API documentation](http://www.aino.io/api) for detailed information about t
 ## Example usage
 Before using the agent, it needs to be configured. Agent can be configured manually or via configuration file.
 
-### 1. Add as Maven/Gradle/Ivy dependency
+### 1. Get the Java Agent jar
 
-Get the dependency snippet from [here](https://bintray.com/aino-io/maven/agent-java/view).
+You have two options:
+
+a) Add as a Maven/Gradle/Ivy dependency to your project. Get the dependency snippet from [here](https://bintray.com/aino-io/maven/agent-java/view).
+
+b) Download it manually from [here](https://github.com/Aino-io/agent-java/releases).
 
 ### 2. Configuring the agent
 Agent is configured with an XML configuration file. Below is an example.
