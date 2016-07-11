@@ -36,6 +36,15 @@ public class OperationValidatorTest {
     }
 
     @Test
+    public void testDoesNotThrowWithMissingOperation() {
+        Transaction tle = new Transaction(agent.getAgentConfig());
+        tle.setFromKey("esb");
+        tle.setToKey("app01");
+
+        agent.addTransaction(tle);
+    }
+
+    @Test
     public void testDoesNotThrowWithValidOperation() {
         Transaction tle = new Transaction(agent.getAgentConfig());
         tle.setFromKey("esb");

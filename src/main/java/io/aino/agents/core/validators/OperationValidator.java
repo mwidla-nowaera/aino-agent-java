@@ -39,7 +39,7 @@ public class OperationValidator implements TransactionValidator {
 
     @Override
     public void validate(Transaction entry) {
-        if(!config.getOperations().entryExists(entry.getOperationKey()))
+        if(null != entry.getOperationKey() && !config.getOperations().entryExists(entry.getOperationKey()))
             throw new AgentCoreException("Operation does not exist: " + entry.getOperationKey());
     }
 }
