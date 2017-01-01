@@ -50,7 +50,7 @@ public class Agent implements ThreadAmountObserver {
 
         senderThreads = new HashMap<Thread, Sender>();
 
-        dataBuffer = new TransactionDataBuffer();
+        dataBuffer = new TransactionDataBuffer(agentConfig.getSizeThreshold());
         Sender sender = new Sender(agentConfig, dataBuffer);
         senderThreads.put(new Thread(sender), sender);
 
