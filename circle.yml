@@ -4,12 +4,8 @@ machine:
     version: oraclejdk7
 
 dependencies:
-  # Cache maven local repository so that we don't have to get dependencies every time
-  cache_directories:
-    - ~/.m2/repository
-
-  override:
-    - mvn clean install
+  pre:
+    - cp ci/settings.xml ~/.m2/
 
 test:
   override:
@@ -23,3 +19,10 @@ test:
     - find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;  #JUnit tests
     - find . -type f -regex ".*/target/failsafe-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/integration-test/ \;  #JUnit tests
     - cp target/AgentJava*.jar $CIRCLE_ARTIFACTS/ # Store builded jar as an artifact
+
+
+deployment:
+  bintray:
+    branch: master
+    commands:
+      - mvn deploy
