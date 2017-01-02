@@ -47,7 +47,7 @@ public class SenderOverloadCheckerTask extends TimerTask {
 
     @Override
     public void run() {
-        if(buffer.isEmpty())
+        if(buffer.isEmpty() || config.getSizeThreshold() <= 1)
             return;
 
         if(config.getSizeThreshold() < buffer.getSize() * 1.3) {
