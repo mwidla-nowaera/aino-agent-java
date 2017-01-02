@@ -218,7 +218,7 @@ public class AgentIntegrationTest {
         assertNotNull("'transactions' should not be null", transactions );
         assertEquals("There should be 0 transactions", 0, transactions.size());
 
-        Thread.sleep(5000); // logger send interval is 5000
+        Thread.sleep(5500); // logger send interval is 5000
         statusCode = client.executeMethod(get);
 
         assertEquals("Status code should be 200", 200, statusCode);
