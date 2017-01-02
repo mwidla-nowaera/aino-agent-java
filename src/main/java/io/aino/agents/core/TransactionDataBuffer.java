@@ -34,6 +34,12 @@ public class TransactionDataBuffer {
     private final LinkedBlockingDeque<TransactionSerializable> transactions = new LinkedBlockingDeque<TransactionSerializable>();
     private final Lock lock = new ReentrantLock();
 
+    private final int sizeThreshold;
+
+    public TransactionDataBuffer(int sizeThreshold) {
+        this.sizeThreshold = sizeThreshold;
+    }
+
     /**
      * Adds observer for listening to size changes in buffer.
      * @param observer observer
@@ -70,7 +76,7 @@ public class TransactionDataBuffer {
      */
     public String getDataToSend() throws IOException {
         final List<TransactionSerializable> entries = new ArrayList<TransactionSerializable>();
-        this.transactions.drainTo(entries);
+        this.transactions.drainTo(entries, elementsToDrain());
 
         return mapper.writeValueAsString(new Object() {
             private final List<TransactionSerializable> transactions = entries;
@@ -103,6 +109,11 @@ public class TransactionDataBuffer {
      */
     public int getSize() {
         return this.transactions.size();
+    }
+
+    private int elementsToDrain() {
+        // ensure transactions get sent one at a time when size threshold is zero or one
+        return sizeThreshold <= 1 ? 1 : Integer.MAX_VALUE;
     }
 
 }
