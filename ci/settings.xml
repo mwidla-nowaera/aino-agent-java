@@ -112,7 +112,7 @@ under the License.
      |-->
     <servers>
         <server>
-            <id>bintray-mystes-maven</id>
+            <id>bintray-aino-io-maven</id>
             <username>${env.BINTRAY_USERNAME}</username>
             <password>${env.BINTRAY_API_KEY}</password>
         </server>
