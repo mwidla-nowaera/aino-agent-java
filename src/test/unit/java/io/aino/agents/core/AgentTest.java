@@ -57,10 +57,10 @@ public class AgentTest {
 
         agent.increaseThreads();
         agent.increaseThreads();
-        assertEquals("thread count", agent.senderThreads.size(), 3);
+        assertEquals("thread count", agent.getSenderThreadCount(), 3);
 
         agent.shutdown();
-        assertEquals("thread count", agent.senderThreads.size(), 0);
+        assertEquals("thread count", agent.getSenderThreadCount(), 0);
     }
 
 }

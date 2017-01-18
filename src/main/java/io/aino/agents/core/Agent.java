@@ -38,7 +38,7 @@ public class Agent implements ThreadAmountObserver {
     private static final Log log = LogFactory.getLog(Agent.class);
 
     private TransactionDataBuffer dataBuffer;
-    protected Map<Thread, Sender> senderThreads;
+    private Map<Thread, Sender> senderThreads;
     private final AgentConfig agentConfig;
     private List<TransactionValidator> validators;
     private Timer overloadCheckerTimer;
@@ -69,6 +69,10 @@ public class Agent implements ThreadAmountObserver {
             }
         }
         log.info("Aino logger initialized.");
+    }
+
+    public int getSenderThreadCount() {
+        return this.senderThreads.size();
     }
 
     /**
