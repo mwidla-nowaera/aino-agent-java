@@ -38,7 +38,7 @@ public class Agent implements ThreadAmountObserver {
     private static final Log log = LogFactory.getLog(Agent.class);
 
     private TransactionDataBuffer dataBuffer;
-    private Map<Thread, Sender> senderThreads;
+    protected Map<Thread, Sender> senderThreads;
     private final AgentConfig agentConfig;
     private List<TransactionValidator> validators;
     private Timer overloadCheckerTimer;
@@ -71,7 +71,10 @@ public class Agent implements ThreadAmountObserver {
         log.info("Aino logger initialized.");
     }
 
-    private void stop() {
+    /**
+     * Gracefully stop the sender threads.
+     */
+    public void stop() {
         overloadCheckerTimer.cancel();
 
         for(Map.Entry<Thread, Sender> thread : senderThreads.entrySet()) {
@@ -85,6 +88,13 @@ public class Agent implements ThreadAmountObserver {
         }
 
         senderThreads.clear();
+    }
+
+    /**
+     * Alias for {@link #stop()}
+     */
+    public void shutdown() {
+        this.stop();
     }
 
     /**
@@ -191,7 +201,7 @@ public class Agent implements ThreadAmountObserver {
 
     @Override
     public void decreaseThreads() {
-
+        log.info("Not implemented yet!");
     }
 
     /**
