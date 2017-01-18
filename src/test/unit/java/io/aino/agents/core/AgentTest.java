@@ -17,10 +17,13 @@
 package io.aino.agents.core;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 import io.aino.agents.core.config.FileConfigBuilder;
 import io.aino.agents.core.config.InvalidAgentConfigException;
 import org.junit.*;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -46,6 +49,18 @@ public class AgentTest {
         Agent agent = Agent.getFactory()
                 .setConfigurationBuilder(new FileConfigBuilder(new File("path/to/config/file")))
                 .build();
+    }
+
+    @Test
+    public void testShutdownAgent() throws Exception {
+        Agent agent = Agent.getFactory().setConfigurationBuilder(new FileConfigBuilder(new File("src/test/resources/validConfig.xml"))).build();
+
+        agent.increaseThreads();
+        agent.increaseThreads();
+        assertEquals("thread count", agent.getSenderThreadCount(), 3);
+
+        agent.shutdown();
+        assertEquals("thread count", agent.getSenderThreadCount(), 0);
     }
 
 }
