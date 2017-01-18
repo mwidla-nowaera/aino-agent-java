@@ -59,9 +59,15 @@ public class TransactionDataBuffer {
         if(lock.tryLock()) {
             int currentSize = this.getSize();
             try {
-                for (TransactionDataObserver observer : observers) {
-                    observer.logDataAdded(currentSize);
+                int observerCount = observers.size();
+
+                for(int i = 0; i < observerCount; i++) {
+                    TransactionDataObserver observer = observers.get(i);
+                    if(observer != null) {
+                        observer.logDataAdded(currentSize);
+                    }
                 }
+
             } finally {
                 lock.unlock();
             }
