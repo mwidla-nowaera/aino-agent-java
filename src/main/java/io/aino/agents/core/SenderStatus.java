@@ -16,7 +16,6 @@
 
 package io.aino.agents.core;
 
-import com.sun.jersey.api.client.ClientResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -113,9 +112,9 @@ class SenderStatus {
      *
      * @param response response to update the state from
      */
-    void responseStatus(ClientResponse response) {
+    void responseStatus(ApiResponse response) {
         this.lastResponseStatus = response.getStatus();
-        this.lastResponse = response.getEntity(String.class);
+        this.lastResponse = response.getPayload();
         this.handleResponseStatus();
     }
 

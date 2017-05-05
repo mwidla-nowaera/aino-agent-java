@@ -51,7 +51,7 @@ public class Agent implements ThreadAmountObserver {
         senderThreads = new HashMap<Thread, Sender>();
 
         dataBuffer = new TransactionDataBuffer(agentConfig.getSizeThreshold());
-        Sender sender = new Sender(agentConfig, dataBuffer);
+        Sender sender = new Sender(agentConfig, dataBuffer, new DefaultApiClient(config));
         senderThreads.put(new Thread(sender), sender);
 
         validators = new ArrayList<TransactionValidator>();
@@ -195,7 +195,7 @@ public class Agent implements ThreadAmountObserver {
         if(MAX_THREAD_AMOUNT <= senderThreads.size())
             return;
 
-        Sender sender = new Sender(agentConfig, dataBuffer);
+        Sender sender = new Sender(agentConfig, dataBuffer, new DefaultApiClient(this.agentConfig));
         Thread thread = new Thread(sender);
         senderThreads.put(thread, sender);
 

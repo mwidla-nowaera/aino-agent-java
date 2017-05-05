@@ -16,16 +16,11 @@
 
 package io.aino.agents.core;
 
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.client.urlconnection.URLConnectionClientHandler;
 import io.aino.agents.core.config.AgentConfig;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.ws.rs.core.HttpHeaders;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -36,7 +31,6 @@ import java.util.zip.GZIPOutputStream;
  */
 public class Sender implements Runnable, TransactionDataObserver {
     private static final Log log = LogFactory.getLog(Sender.class);
-    private static final String AUTHORIZATION_HEADER = "Authorization";
 
     private enum Action {
         RETRY, SEND, NONE
@@ -45,9 +39,9 @@ public class Sender implements Runnable, TransactionDataObserver {
     private AtomicBoolean continueLoop = new AtomicBoolean(true);
     private SenderStatus status = new SenderStatus();
 
-    private AgentConfig agentConfig;
-    private TransactionDataBuffer transactionDataBuffer;
-    private WebResource resource;
+    private final AgentConfig agentConfig;
+    private final TransactionDataBuffer transactionDataBuffer;
+    private final ApiClient client;
     private String stringToSend;
 
     /**
@@ -56,8 +50,9 @@ public class Sender implements Runnable, TransactionDataObserver {
      * @param config agent configuration
      * @param dataBuffer databuffer to use
      */
-    public Sender(AgentConfig config, TransactionDataBuffer dataBuffer) {
+    public Sender(AgentConfig config, TransactionDataBuffer dataBuffer, ApiClient client) {
         agentConfig = config;
+        this.client = client;
         transactionDataBuffer = dataBuffer;
         transactionDataBuffer.addLogDataSizeObserver(this);
     }
@@ -81,10 +76,6 @@ public class Sender implements Runnable, TransactionDataObserver {
 
     @Override
     public void run() {
-        URLConnectionClientHandler connection = HttpProxyFactory.getConnectionHandler(agentConfig);
-        Client restClient = new Client(connection);
-        resource = restClient.resource(agentConfig.getLogServiceUri());
-
         status.initialStatus();
 
         try {
@@ -145,7 +136,7 @@ public class Sender implements Runnable, TransactionDataObserver {
             status.retryCount++;
             log.debug("Attempting to resend log entries (retry " + status.retryCount + ").");
 
-            ClientResponse response = buildRequest().post(ClientResponse.class, getRequestContent());
+            ApiResponse response = client.send(getRequestContent());
 
             status.responseStatus(response);
         } catch (ClientHandlerException e) {
@@ -155,17 +146,7 @@ public class Sender implements Runnable, TransactionDataObserver {
         }
     }
 
-    private WebResource.Builder buildRequest() {
-        WebResource.Builder builder = resource.accept("text/plain").type("application/json")
-                .header(AUTHORIZATION_HEADER, "apikey " + agentConfig.getApiKey());
 
-        if(agentConfig.isGzipEnabled()) {
-            builder.header(HttpHeaders.CONTENT_ENCODING, "gzip");
-            builder.header(HttpHeaders.ACCEPT_ENCODING, "gzip");
-        }
-
-        return builder;
-    }
 
     private byte[] getRequestContent() {
         if(!agentConfig.isGzipEnabled()) {
