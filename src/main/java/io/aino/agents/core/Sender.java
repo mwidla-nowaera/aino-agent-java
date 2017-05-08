@@ -79,7 +79,7 @@ public class Sender implements Runnable, TransactionDataObserver {
         status.initialStatus();
 
         try {
-            while (continueLoop.get()) {
+            while (transactionDataBuffer.containsData() || continueLoop.get()) {
                 switch(action()) {
                     case RETRY: retry(); break;
                     case SEND: send(); break;
