@@ -46,18 +46,18 @@ public class Agent implements ThreadAmountObserver {
     private final int MAX_THREAD_AMOUNT = 5;
 
     private Agent(AgentConfig config) {
-        agentConfig = config;
+        this.agentConfig = config;
 
         senderThreads = new HashMap<Thread, Sender>();
 
         dataBuffer = new TransactionDataBuffer(agentConfig.getSizeThreshold());
-        Sender sender = new Sender(agentConfig, dataBuffer, new DefaultApiClient(config));
+        Sender sender = createSender();
         senderThreads.put(new Thread(sender), sender);
 
         validators = new ArrayList<TransactionValidator>();
-        validators.add(new OperationValidator(agentConfig));
-        validators.add(new IdTypeValidator(agentConfig));
-        validators.add(new ApplicationValidator(agentConfig));
+        validators.add(new OperationValidator(this.agentConfig));
+        validators.add(new IdTypeValidator(this.agentConfig));
+        validators.add(new ApplicationValidator(this.agentConfig));
 
         overloadCheckerTimer = new Timer(true);
         overloadCheckerTimer.schedule(new SenderOverloadCheckerTask(this, dataBuffer, agentConfig), 5000, 5000);
@@ -109,7 +109,7 @@ public class Agent implements ThreadAmountObserver {
      * @return new Transaction for logging
      */
     public Transaction newTransaction() {
-        return new Transaction(agentConfig);
+        return new Transaction(this.agentConfig);
     }
 
     /**
@@ -139,7 +139,7 @@ public class Agent implements ThreadAmountObserver {
      * @return true if enabled
      */
     public boolean isEnabled() {
-        return agentConfig.isEnabled();
+        return this.agentConfig.isEnabled();
     }
 
     /**
@@ -195,7 +195,7 @@ public class Agent implements ThreadAmountObserver {
         if(MAX_THREAD_AMOUNT <= senderThreads.size())
             return;
 
-        Sender sender = new Sender(agentConfig, dataBuffer, new DefaultApiClient(this.agentConfig));
+        Sender sender = createSender();
         Thread thread = new Thread(sender);
         senderThreads.put(thread, sender);
 
@@ -206,6 +206,10 @@ public class Agent implements ThreadAmountObserver {
     @Override
     public void decreaseThreads() {
         log.info("Not implemented yet!");
+    }
+
+    private Sender createSender() {
+        return new Sender(this.agentConfig, this.dataBuffer, new DefaultApiClient(this.agentConfig));
     }
 
     /**

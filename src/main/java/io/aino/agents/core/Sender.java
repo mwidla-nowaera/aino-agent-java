@@ -49,6 +49,7 @@ public class Sender implements Runnable, TransactionDataObserver {
      *
      * @param config agent configuration
      * @param dataBuffer databuffer to use
+     * @param client the Aino.io API client to use
      */
     public Sender(AgentConfig config, TransactionDataBuffer dataBuffer, ApiClient client) {
         agentConfig = config;
