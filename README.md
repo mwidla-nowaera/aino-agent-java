@@ -104,7 +104,7 @@ transaction.setPayloadTypeKey("payloadType1");
 transaction.addMetadata("Extra data", "Oh sleep! it is a gentle thing, Beloved from pole to pole!");
 
 // add ids that identifies the logged data
-ArrayList<String> idValues = new ArrayList<String>();
+List<String> idValues = new ArrayList<String>();
 list.add("1");
 list.add("2");
 list.add("3");
