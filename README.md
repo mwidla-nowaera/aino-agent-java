@@ -84,7 +84,7 @@ transaction.setFromKey("application2");
 transaction.setStatus("success");
 
 // Send entry to aino.io
-ainoLogger.addTransaction(entry);                // Do the actual logging to aino.io
+ainoLogger.addTransaction(transaction);                // Do the actual logging to aino.io
 ```
 
 #### Full example
@@ -111,7 +111,7 @@ list.add("3");
 transaction.addIdsByTypeKey("key1", idValues);
 
 // Send entry to aino.io
-ainoLogger.addTransaction(entry);                // Do the actual logging to aino.io
+ainoLogger.addTransaction(transaction);                // Do the actual logging to aino.io
 ```
 
 
