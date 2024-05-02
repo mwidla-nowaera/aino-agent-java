@@ -31,6 +31,10 @@ class ServiceConfig {
     private int sendInterval;
     private int sendSizeThreshold;
     private String proxyHost = null;
+
+    private String elasticSearchUri = null;
+
+    private String elasticSearchIndexName= null;
     private int proxyPort = 0;
 
     /**
@@ -187,5 +191,29 @@ class ServiceConfig {
      */
     public boolean isProxyDefined() {
         return StringUtils.isNotBlank(getProxyHost());
+    }
+
+    public String getElasticSearchUri() {
+        return elasticSearchUri;
+    }
+
+    public void setElasticSearchUri(String elasticSearchUri) {
+        this.elasticSearchUri = elasticSearchUri;
+    }
+
+    public boolean isElasticDefined(){
+        return StringUtils.isNotBlank(getElasticSearchUri());
+    }
+
+    public String getElasticSearchIndexName() {
+        return elasticSearchIndexName;
+    }
+
+    public void setElasticSearchIndexName(String elasticSearchIndexName) {
+        this.elasticSearchIndexName = elasticSearchIndexName;
+    }
+
+    public boolean isElasticSearchIndexNameDefined(){
+        return StringUtils.isNotBlank(getElasticSearchIndexName());
     }
 }

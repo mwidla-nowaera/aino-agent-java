@@ -34,6 +34,22 @@ public class AgentConfig {
         PAYLOADTYPES
     }
 
+    public String getElasticSearchUri(){
+        return this.loggerService.getElasticSearchUri();
+    }
+
+    public void setElasticSearchUri(String newUri){
+        this.loggerService.setElasticSearchUri(newUri);
+    }
+
+    public String getElasticSearchIndexName(){
+        return this.loggerService.getElasticSearchIndexName();
+    }
+
+    public void setElasticSearchIndexName(String newIndexName){
+        this.loggerService.setElasticSearchIndexName(newIndexName);
+    }
+
     /**
      * Get the configured URL to aino.io API.
      *

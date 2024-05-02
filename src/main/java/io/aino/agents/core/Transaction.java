@@ -28,6 +28,9 @@ import java.util.*;
  */
 public class Transaction {
 
+    public Transaction() {
+    }
+
     private String toKey;
     private String fromKey;
     private String operationKey;

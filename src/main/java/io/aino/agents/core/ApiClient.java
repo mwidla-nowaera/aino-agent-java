@@ -15,9 +15,14 @@
  */
 package io.aino.agents.core;
 
+import co.elastic.clients.elasticsearch.core.BulkRequest;
+import co.elastic.clients.elasticsearch.core.BulkResponse;
+
+import java.util.List;
+
 /**
  * A delegate for sending data to Aino.io API
  */
 public interface ApiClient {
-    ApiResponse send(byte[] data);
+    ApiResponse send(byte[] data, List<TransactionSerializable> transactions);
 }

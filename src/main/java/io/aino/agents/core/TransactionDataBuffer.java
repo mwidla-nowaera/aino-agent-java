@@ -31,6 +31,8 @@ import java.util.concurrent.locks.ReentrantLock;
 public class TransactionDataBuffer {
     private final ObjectMapper mapper = new ObjectMapper();
     private final List<TransactionDataObserver> observers = new ArrayList<TransactionDataObserver>();
+
+    private List<TransactionSerializable> transactionsSerializable = new ArrayList<>();
     private final LinkedBlockingDeque<TransactionSerializable> transactions = new LinkedBlockingDeque<TransactionSerializable>();
     private final Lock lock = new ReentrantLock();
 
@@ -83,11 +85,16 @@ public class TransactionDataBuffer {
     public String getDataToSend() throws IOException {
         final List<TransactionSerializable> entries = new ArrayList<TransactionSerializable>();
         this.transactions.drainTo(entries, elementsToDrain());
-
+        this.transactionsSerializable = entries;
         return mapper.writeValueAsString(new Object() {
             private final List<TransactionSerializable> transactions = entries;
+
             public List<TransactionSerializable> getTransactions() { return transactions; } // Needed for mapper?
         });
+    }
+
+    public List<TransactionSerializable> getTransactions() {
+        return transactionsSerializable;
     }
 
     /**

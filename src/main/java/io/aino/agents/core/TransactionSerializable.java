@@ -269,4 +269,14 @@ public class TransactionSerializable {
     public void setSize(int size) {
         this.size = size;
     }
+
+
+    @Override
+    public String toString() {
+        return "TransactionSerializable{" +
+                "size=" + size +
+                ", fields=" + fields +
+                ", idLists=" + idLists +
+                '}';
+    }
 }

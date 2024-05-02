@@ -16,6 +16,7 @@
 
 package io.aino.agents.core;
 
+import co.elastic.clients.elasticsearch.core.BulkResponse;
 import com.sun.jersey.api.client.ClientHandlerException;
 import io.aino.agents.core.config.AgentConfig;
 import org.apache.commons.logging.Log;
@@ -23,6 +24,7 @@ import org.apache.commons.logging.LogFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.zip.GZIPOutputStream;
 
@@ -137,7 +139,7 @@ public class Sender implements Runnable, TransactionDataObserver {
             status.retryCount++;
             log.debug("Attempting to resend log entries (retry " + status.retryCount + ").");
 
-            ApiResponse response = client.send(getRequestContent());
+            ApiResponse response = client.send(getRequestContent(), getTransactions());
 
             status.responseStatus(response);
         } catch (ClientHandlerException e) {
@@ -147,6 +149,10 @@ public class Sender implements Runnable, TransactionDataObserver {
         }
     }
 
+
+    private List<TransactionSerializable> getTransactions(){
+        return transactionDataBuffer.getTransactions();
+    }
 
 
     private byte[] getRequestContent() {
