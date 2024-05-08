@@ -18,26 +18,19 @@ package io.aino.agents.core;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
-import co.elastic.clients.elasticsearch.core.BulkResponse;
-import co.elastic.clients.json.JsonpMapperBase;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.client.urlconnection.URLConnectionClientHandler;
 import io.aino.agents.core.config.AgentConfig;
 import org.apache.http.HttpHost;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.client.RestClient;
 
 import javax.ws.rs.core.HttpHeaders;
 import java.io.IOException;
-import java.io.StringReader;
-import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
