@@ -60,6 +60,10 @@ public class InputStreamConfigBuilder implements AgentConfigBuilder {
     private static QName CONFIG_KEY_ATT_Q = new QName("key");
     private static QName CONFIG_NAME_ATT_Q = new QName("name");
 
+    private static QName CONFIG_ELASTICSEARCH_Q = new QName("elasticSearch");
+    private static QName CONFIG_ELASTICSEARCH_URI_Q = new QName("uri");
+    private static QName CONFIG_ELASTICSEARCH_INDEXNAME_Q = new QName("indexName");
+
     private final InputStream stream;
 
     /**
@@ -135,8 +139,9 @@ public class InputStreamConfigBuilder implements AgentConfigBuilder {
         OMElement addressElement = serviceElement.getFirstChildWithName(CONFIG_ADDRESS_Q);
         OMElement proxyElement = serviceElement.getFirstChildWithName(CONFIG_PROXY_Q);
         OMElement sendElement = serviceElement.getFirstChildWithName(CONFIG_SEND_Q);
+        OMElement elasticSearchElement = sendElement.getFirstChildWithName(CONFIG_ELASTICSEARCH_Q);
 
-        if (null == addressElement || null == sendElement) {
+        if (null == addressElement || null == sendElement || null == elasticSearchElement) {
             throw new InvalidAgentConfigException("The logger config does not contain all of the required elements for the logger service configuration.");
         }
 
@@ -145,6 +150,9 @@ public class InputStreamConfigBuilder implements AgentConfigBuilder {
         config.setSendInterval(Integer.parseInt(sendElement.getAttributeValue(CONFIG_INTERVAL_ATT_Q)));
         config.setSizeThreshold(Integer.parseInt(sendElement.getAttributeValue(CONFIG_SIZE_THRESHOLD_ATT_Q)));
         config.setGzipEnabled(Boolean.parseBoolean(sendElement.getAttributeValue(CONFIG_GZIP_ENABLED_ATT_Q)));
+
+        config.setElasticSearchUri(elasticSearchElement.getAttributeValue(CONFIG_ELASTICSEARCH_URI_Q));
+        config.setElasticSearchIndexName(elasticSearchElement.getAttributeValue(CONFIG_ELASTICSEARCH_INDEXNAME_Q));
 
         if(null != proxyElement){
             config.setProxyHost(proxyElement.getAttributeValue(CONFIG_HOST_ATT_Q));
