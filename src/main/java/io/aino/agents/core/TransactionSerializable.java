@@ -16,13 +16,14 @@
 
 package io.aino.agents.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  * This class exists for convenient JSON serialization (by Jackson) of log

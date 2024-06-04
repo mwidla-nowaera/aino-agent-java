@@ -139,9 +139,9 @@ public class InputStreamConfigBuilder implements AgentConfigBuilder {
         OMElement addressElement = serviceElement.getFirstChildWithName(CONFIG_ADDRESS_Q);
         OMElement proxyElement = serviceElement.getFirstChildWithName(CONFIG_PROXY_Q);
         OMElement sendElement = serviceElement.getFirstChildWithName(CONFIG_SEND_Q);
-        OMElement elasticSearchElement = sendElement.getFirstChildWithName(CONFIG_ELASTICSEARCH_Q);
+        OMElement elasticSearchElement = serviceElement.getFirstChildWithName(CONFIG_ELASTICSEARCH_Q);
 
-        if (null == addressElement || null == sendElement || null == elasticSearchElement) {
+        if (null == addressElement || null == elasticSearchElement) {
             throw new InvalidAgentConfigException("The logger config does not contain all of the required elements for the logger service configuration.");
         }
 
