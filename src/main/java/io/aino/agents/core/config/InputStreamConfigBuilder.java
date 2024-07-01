@@ -63,6 +63,9 @@ public class InputStreamConfigBuilder implements AgentConfigBuilder {
     private static QName CONFIG_ELASTICSEARCH_Q = new QName("elasticSearch");
     private static QName CONFIG_ELASTICSEARCH_URI_Q = new QName("uri");
     private static QName CONFIG_ELASTICSEARCH_INDEXNAME_Q = new QName("indexName");
+    private static QName CONFIG_ELASTICSEARCH_PORT_Q = new QName("port");
+    private static QName CONFIG_ELASTICSEARCH_username_Q = new QName("username");
+    private static QName CONFIG_ELASTICSEARCH_password_Q = new QName("password");
 
     private final InputStream stream;
 
@@ -153,6 +156,9 @@ public class InputStreamConfigBuilder implements AgentConfigBuilder {
 
         config.setElasticSearchUri(elasticSearchElement.getAttributeValue(CONFIG_ELASTICSEARCH_URI_Q));
         config.setElasticSearchIndexName(elasticSearchElement.getAttributeValue(CONFIG_ELASTICSEARCH_INDEXNAME_Q));
+        config.setElasticSearchPort(Integer.parseInt(elasticSearchElement.getAttributeValue(CONFIG_ELASTICSEARCH_PORT_Q)));
+        config.setElasticSearchUsername(elasticSearchElement.getAttributeValue(CONFIG_ELASTICSEARCH_username_Q));
+        config.setElasticSearchPassword(elasticSearchElement.getAttributeValue(CONFIG_ELASTICSEARCH_password_Q));
 
         if(null != proxyElement){
             config.setProxyHost(proxyElement.getAttributeValue(CONFIG_HOST_ATT_Q));

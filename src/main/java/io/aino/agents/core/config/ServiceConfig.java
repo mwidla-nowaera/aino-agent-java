@@ -35,6 +35,11 @@ class ServiceConfig {
     private String elasticSearchUri = null;
 
     private String elasticSearchIndexName= null;
+
+    private int elasticSearchPort = -1;
+    private String elasticSearchUsername = null;
+    private String elasticSearchPassword = null;
+
     private int proxyPort = 0;
 
     /**
@@ -211,6 +216,30 @@ class ServiceConfig {
 
     public void setElasticSearchIndexName(String elasticSearchIndexName) {
         this.elasticSearchIndexName = elasticSearchIndexName;
+    }
+
+    public String getElasticSearchPassword() {
+        return elasticSearchPassword;
+    }
+
+    public String getElasticSearchUsername() {
+        return elasticSearchUsername;
+    }
+
+    public int getElasticSearchPort() {
+        return elasticSearchPort;
+    }
+
+    public void setElasticSearchPort(int elasticSearchPort) {
+        this.elasticSearchPort = elasticSearchPort;
+    }
+
+    public void setElasticSearchUsername(String elasticSearchUsername) {
+        this.elasticSearchUsername = elasticSearchUsername;
+    }
+
+    public void setElasticSearchPassword(String elasticSearchPassword) {
+        this.elasticSearchPassword = elasticSearchPassword;
     }
 
     public boolean isElasticSearchIndexNameDefined(){

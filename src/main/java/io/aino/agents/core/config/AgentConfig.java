@@ -46,6 +46,30 @@ public class AgentConfig {
         return this.loggerService.getElasticSearchIndexName();
     }
 
+    public int getElasticSearchPort(){
+       return this.loggerService.getElasticSearchPort();
+    }
+
+    public String getElasticSearchUsername(){
+        return this.loggerService.getElasticSearchUsername();
+    }
+
+    public String getElasticSearchPassword(){
+        return this.loggerService.getElasticSearchPassword();
+    }
+
+    public void setElasticSearchPort(int newPort){
+        this.loggerService.setElasticSearchPort(newPort);
+    }
+
+    public void setElasticSearchUsername(String newUsername){
+        this.loggerService.setElasticSearchUsername(newUsername);
+    }
+
+    public void setElasticSearchPassword(String newPassword){
+        this.loggerService.setElasticSearchPassword(newPassword);
+    }
+
     public void setElasticSearchIndexName(String newIndexName){
         this.loggerService.setElasticSearchIndexName(newIndexName);
     }

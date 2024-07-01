@@ -26,7 +26,15 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.client.urlconnection.URLConnectionClientHandler;
 import io.aino.agents.core.config.AgentConfig;
+import org.apache.http.Header;
 import org.apache.http.HttpHost;
+import org.apache.http.HttpResponseInterceptor;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.message.BasicHeader;
 import org.elasticsearch.client.RestClient;
 
 import javax.ws.rs.core.HttpHeaders;
@@ -43,6 +51,8 @@ public class DefaultApiClient implements ApiClient {
     private final ElasticsearchTransport est;
     private final ElasticsearchClient esClient;
 
+    CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+
     private final String elasticSearchUrl ;
 
     private final WebResource resource;
@@ -50,8 +60,30 @@ public class DefaultApiClient implements ApiClient {
 
     public DefaultApiClient(final AgentConfig config) {
         elasticSearchUrl = config.getElasticSearchUri();
+
+        credentialsProvider.setCredentials(
+                AuthScope.ANY,
+                new UsernamePasswordCredentials(config.getElasticSearchUsername(), config.getElasticSearchPassword())
+        );
+
+        HttpHost host = new HttpHost(elasticSearchUrl,config.getElasticSearchPort(),"https");
+
         RestClient restClient2 = RestClient
-                .builder(HttpHost.create(elasticSearchUrl))
+                .builder( host )
+                .setHttpClientConfigCallback(
+                        httpAsyncClientBuilder -> httpAsyncClientBuilder
+                                .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                                .setDefaultCredentialsProvider(credentialsProvider)
+                                .addInterceptorLast(
+                                        (HttpResponseInterceptor)
+                                                (response,request) -> {
+                                                    response.addHeader("X-Elastic-Product","Elasticsearch");
+                                                }
+                                )
+                )
+                .setDefaultHeaders(new Header[]{
+                        new BasicHeader("Content-type","application/json")
+                })
                 .build();
 
         this.est = new RestClientTransport(restClient2,new JacksonJsonpMapper());
@@ -69,16 +101,14 @@ public class DefaultApiClient implements ApiClient {
         System.out.println(transactions);
 
         transactions.forEach(
-                elem -> {
-                    req.operations(
-                            op -> op
-                                    .index(
-                                            ind -> ind.index(agentConfig.getElasticSearchIndexName())
-                                                    .id(UUID.randomUUID().toString())
-                                                    .document(elem)
-                                    )
-                    );
-                }
+                elem -> req.operations(
+                        op -> op
+                                .index(
+                                        ind -> ind.index(agentConfig.getElasticSearchIndexName())
+                                                .id(UUID.randomUUID().toString())
+                                                .document(elem)
+                                )
+                )
         );
         try {
             System.out.println(esClient.bulk(req.build()));
