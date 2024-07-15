@@ -21,6 +21,9 @@ import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -41,6 +44,7 @@ import javax.ws.rs.core.HttpHeaders;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Default implementation for {@link ApiClient}
@@ -96,9 +100,11 @@ public class DefaultApiClient implements ApiClient {
     }
 
     @Override
-    public ApiResponse send(final byte[] data, final List<TransactionSerializable> transactions) {
+    public ApiResponse send(final byte[] data, final String stringToSend) throws JsonProcessingException {
         BulkRequest.Builder req =  new BulkRequest.Builder();
-        System.out.println(transactions);
+        ObjectMapper mapper = new ObjectMapper();
+        TransactionWrapper transactionWrapper = mapper.readValue(stringToSend, TransactionWrapper.class);
+        List<Transaction> transactions = transactionWrapper.getTransactions();
 
         transactions.forEach(
                 elem -> req.operations(
@@ -111,7 +117,7 @@ public class DefaultApiClient implements ApiClient {
                 )
         );
         try {
-            System.out.println(esClient.bulk(req.build()));
+            esClient.bulk(req.build());
             return new ApiResponseImpl(buildRequest().post(ClientResponse.class, data));
         } catch (IOException e) {
             throw new RuntimeException(e);

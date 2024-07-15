@@ -17,12 +17,14 @@ package io.aino.agents.core;
 
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * A delegate for sending data to Aino.io API
  */
 public interface ApiClient {
-    ApiResponse send(byte[] data, List<TransactionSerializable> transactions);
+    ApiResponse send(byte[] data, String stringToSend) throws JsonProcessingException;
 }

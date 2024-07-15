@@ -16,6 +16,8 @@
 
 package io.aino.agents.core;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.aino.agents.core.config.AgentConfig;
 import org.apache.commons.lang3.StringUtils;
 
@@ -26,21 +28,54 @@ import java.util.*;
  *
  * Once log entry is created with desired data, it should be passed to {@link Agent} for sending.
  */
+@JsonDeserialize(using = TransactionDeserializer.class)
 public class Transaction {
 
     public Transaction() {
+        this.ids = new HashMap<>();
     }
 
+
     private String toKey;
+
     private String fromKey;
+
     private String operationKey;
+
     private String payloadTypeKey;
+
     private String message;
+
     private String status;
+
     private String flowId;
+
     private Map<String, List<String>> ids;
+
     private Long timestamp;
+
     private List<NameValuePair> metadata;
+
+    public void setIds(Map<String, List<String>> ids) {
+        this.ids = ids;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public void setMetadata(List<NameValuePair> metadata) {
+        this.metadata = metadata;
+    }
+
+    public AgentConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(AgentConfig config) {
+        this.config = config;
+    }
+
     private AgentConfig config;
 
     public enum Field {

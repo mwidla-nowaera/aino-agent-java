@@ -39,6 +39,10 @@
                                     <pattern>org.apache.http</pattern>
                                     <shadedPattern>shaded.org.apache.http</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>com.fasterxml.jackson</pattern>
+                                    <shadedPattern>shaded.com.fasterxml.jackson</shadedPattern>
+                                </relocation>
                             </relocations>
                             <createDependencyReducedPom>true</createDependencyReducedPom>
                         </configuration>

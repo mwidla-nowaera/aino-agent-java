@@ -17,6 +17,7 @@
 package io.aino.agents.core;
 
 import co.elastic.clients.elasticsearch.core.BulkResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sun.jersey.api.client.ClientHandlerException;
 import io.aino.agents.core.config.AgentConfig;
 import org.apache.commons.logging.Log;
@@ -139,19 +140,16 @@ public class Sender implements Runnable, TransactionDataObserver {
             status.retryCount++;
             log.debug("Attempting to resend log entries (retry " + status.retryCount + ").");
 
-            ApiResponse response = client.send(getRequestContent(), getTransactions());
+            ApiResponse response = client.send(getRequestContent(), stringToSend );
 
             status.responseStatus(response);
         } catch (ClientHandlerException e) {
             status.exceptionStatus();
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         } finally {
             status.continuationStatus();
         }
-    }
-
-
-    private List<TransactionSerializable> getTransactions(){
-        return transactionDataBuffer.getTransactions();
     }
 
 
