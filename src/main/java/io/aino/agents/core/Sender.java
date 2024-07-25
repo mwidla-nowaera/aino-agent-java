@@ -143,10 +143,8 @@ public class Sender implements Runnable, TransactionDataObserver {
             ApiResponse response = client.send(getRequestContent(), stringToSend );
 
             status.responseStatus(response);
-        } catch (ClientHandlerException e) {
+        } catch (ClientHandlerException | JsonProcessingException e) {
             status.exceptionStatus();
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
         } finally {
             status.continuationStatus();
         }

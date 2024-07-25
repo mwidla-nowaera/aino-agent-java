@@ -51,26 +51,33 @@ import java.util.concurrent.LinkedBlockingDeque;
  */
 public class DefaultApiClient implements ApiClient {
     private static final String AUTHORIZATION_HEADER = "Authorization";
-
-    private final ElasticsearchTransport est;
-    private final ElasticsearchClient esClient;
+    private ElasticsearchClient esClient;
 
     CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
 
-    private final String elasticSearchUrl ;
+    private final String elasticSearchUrl;
+    private final Integer elasticSearchPort;
 
-    private final WebResource resource;
+    private WebResource resource;
     private final AgentConfig agentConfig;
 
     public DefaultApiClient(final AgentConfig config) {
-        elasticSearchUrl = config.getElasticSearchUri();
+        this.agentConfig = config;
+        URLConnectionClientHandler connection = HttpProxyFactory.getConnectionHandler(agentConfig);
+        Client restClient = new Client(connection);
+        resource = restClient.resource(agentConfig.getLogServiceUri());
+
+        this.elasticSearchUrl = config.getElasticSearchUri();
+        this.elasticSearchPort = config.getElasticSearchPort();
 
         credentialsProvider.setCredentials(
                 AuthScope.ANY,
                 new UsernamePasswordCredentials(config.getElasticSearchUsername(), config.getElasticSearchPassword())
         );
+    }
 
-        HttpHost host = new HttpHost(elasticSearchUrl,config.getElasticSearchPort(),"https");
+    public void setupOpensearchConnection(){
+        HttpHost host = new HttpHost(elasticSearchUrl,elasticSearchPort,"https");
 
         RestClient restClient2 = RestClient
                 .builder( host )
@@ -90,17 +97,13 @@ public class DefaultApiClient implements ApiClient {
                 })
                 .build();
 
-        this.est = new RestClientTransport(restClient2,new JacksonJsonpMapper());
-        this.esClient = new ElasticsearchClient(est);
-
-        this.agentConfig = config;
-        URLConnectionClientHandler connection = HttpProxyFactory.getConnectionHandler(agentConfig);
-        Client restClient = new Client(connection);
-        resource = restClient.resource(agentConfig.getLogServiceUri());
+        ElasticsearchTransport transport = new RestClientTransport(restClient2,new JacksonJsonpMapper());
+        esClient = new ElasticsearchClient(transport);
     }
 
     @Override
     public ApiResponse send(final byte[] data, final String stringToSend) throws JsonProcessingException {
+        setupOpensearchConnection();
         BulkRequest.Builder req =  new BulkRequest.Builder();
         ObjectMapper mapper = new ObjectMapper();
         TransactionWrapper transactionWrapper = mapper.readValue(stringToSend, TransactionWrapper.class);
@@ -120,7 +123,7 @@ public class DefaultApiClient implements ApiClient {
             esClient.bulk(req.build());
             return new ApiResponseImpl(buildRequest().post(ClientResponse.class, data));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return new ApiResponseImpl(buildRequest().post(ClientResponse.class, data));
         }
 
     }

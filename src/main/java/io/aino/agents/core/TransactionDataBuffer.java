@@ -93,8 +93,6 @@ public class TransactionDataBuffer {
         });
     }
 
-    public LinkedBlockingDeque<TransactionSerializable> getTransactions() { return transactions; }
-
     /**
      * Checks if this buffer is empty.
      *
