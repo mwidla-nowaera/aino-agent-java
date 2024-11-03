@@ -16,7 +16,6 @@
 
 package io.aino.agents.core;
 
-import co.elastic.clients.elasticsearch.core.BulkResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

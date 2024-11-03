@@ -15,8 +15,6 @@
  */
 package io.aino.agents.core;
 
-import co.elastic.clients.elasticsearch.core.BulkRequest;
-import co.elastic.clients.elasticsearch.core.BulkResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
