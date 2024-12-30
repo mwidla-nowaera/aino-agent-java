@@ -39,6 +39,8 @@ import org.opensearch.client.json.jackson.JacksonJsonpMapper;
 import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch._types.OpenSearchException;
 import org.opensearch.client.opensearch.core.BulkRequest;
+import org.opensearch.client.opensearch.core.BulkResponse;
+import org.opensearch.client.opensearch.core.IndexResponse;
 import org.opensearch.client.transport.OpenSearchTransport;
 import org.opensearch.client.transport.rest_client.RestClientTransport;
 
@@ -135,11 +137,11 @@ public class DefaultApiClient implements ApiClient {
                 )
         );
         try {
-            esClient.bulk(req.build());
-            return new ApiResponseImpl(buildRequest().post(ClientResponse.class, data));
+            //esClient.bulk();
+            //BulkResponse response = esClient.bulk(req.build());
+            return new OpensearchApiResponseImpl(esClient.bulk(req.build()));
         } catch (IOException e) {
-            log.error("Error sending data to opensearch: "+e);
-            return new ApiResponseImpl(buildRequest().post(ClientResponse.class, data));
+            return new OpensearchApiResponseImpl(500);
         }
 
     }
@@ -171,6 +173,36 @@ public class DefaultApiClient implements ApiClient {
         @Override
         public String getPayload() {
             return response.getEntity(String.class);
+        }
+    }
+
+    private static final class OpensearchApiResponseImpl implements ApiResponse {
+        private final Integer status;
+        private final String payload;
+
+
+        OpensearchApiResponseImpl(BulkResponse response){
+            if (response.errors()){
+                this.status = response.items().get(0).status();
+            } else {
+                this.status = 200;
+            }
+            this.payload = "test";
+        }
+
+        OpensearchApiResponseImpl(Integer status){
+            this.status = status;
+            this.payload = "Error while connecting to Opensearch";
+        }
+
+        @Override
+        public int getStatus() {
+            return status;
+        }
+
+        @Override
+        public String getPayload() {
+            return payload;
         }
     }
 }
