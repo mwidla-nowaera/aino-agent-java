@@ -40,7 +40,6 @@ import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch._types.OpenSearchException;
 import org.opensearch.client.opensearch.core.BulkRequest;
 import org.opensearch.client.opensearch.core.BulkResponse;
-import org.opensearch.client.opensearch.core.IndexResponse;
 import org.opensearch.client.transport.OpenSearchTransport;
 import org.opensearch.client.transport.rest_client.RestClientTransport;
 
@@ -137,8 +136,6 @@ public class DefaultApiClient implements ApiClient {
                 )
         );
         try {
-            //esClient.bulk();
-            //BulkResponse response = esClient.bulk(req.build());
             return new OpensearchApiResponseImpl(esClient.bulk(req.build()));
         } catch (IOException e) {
             return new OpensearchApiResponseImpl(500);
